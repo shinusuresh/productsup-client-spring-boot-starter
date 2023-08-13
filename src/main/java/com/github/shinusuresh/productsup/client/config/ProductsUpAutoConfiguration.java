@@ -30,7 +30,7 @@ public class ProductsUpAutoConfiguration {
     @Bean
     public PlatformApiClient platformApiClient() {
         var webClient = WebClient.builder()
-                .baseUrl("https://platform-api.productsup.io/platform/v2")
+                .baseUrl(productsUpProperties.getPlatformEndpoint())
                 .defaultHeader("X-Auth-Token", productsUpProperties.getToken())
                 .build();
         var factory = HttpServiceProxyFactory

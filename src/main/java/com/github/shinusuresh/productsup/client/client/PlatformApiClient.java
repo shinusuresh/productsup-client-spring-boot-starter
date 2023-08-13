@@ -1,6 +1,8 @@
 package com.github.shinusuresh.productsup.client.client;
 
 import com.github.shinusuresh.productsup.client.domain.project.Projects;
+import com.github.shinusuresh.productsup.client.domain.sites.Sites;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.service.annotation.GetExchange;
 
 /**
@@ -15,5 +17,8 @@ public interface PlatformApiClient {
      */
     @GetExchange("/projects")
     Projects getProjects();
+
+    @GetExchange("/projects/{projectId}/sites")
+    Sites getSites(@PathVariable(value = "projectId") final String projectId);
 
 }

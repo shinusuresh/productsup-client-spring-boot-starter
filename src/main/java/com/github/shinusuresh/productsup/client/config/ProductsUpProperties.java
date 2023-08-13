@@ -7,6 +7,16 @@ public class ProductsUpProperties {
 
     private String token;
 
+    private String platformEndpoint = "https://platform-api.productsup.io/platform/v2";
+
+    public String getPlatformEndpoint() {
+        return platformEndpoint;
+    }
+
+    public void setPlatformEndpoint(String platformEndpoint) {
+        this.platformEndpoint = platformEndpoint;
+    }
+
     public String getToken() {
         return token;
     }
