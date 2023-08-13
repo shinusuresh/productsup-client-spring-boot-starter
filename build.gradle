@@ -3,6 +3,7 @@ plugins {
     id 'maven-publish'
     id 'signing'
     id 'io.github.gradle-nexus.publish-plugin' version '2.0.0-rc-1'
+    id "org.sonarqube" version "4.2.1.3168"
 }
 
 group = 'com.github.shinusuresh'
@@ -74,5 +75,13 @@ publishing {
                 }
             }
         }
+    }
+}
+
+sonar {
+    properties {
+        property "sonar.projectKey", "shinusuresh_productsup-client-spring-boot-starter"
+        property "sonar.organization", "shinusuresh"
+        property "sonar.host.url", "https://sonarcloud.io"
     }
 }
