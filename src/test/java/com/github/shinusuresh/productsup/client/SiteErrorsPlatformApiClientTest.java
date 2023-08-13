@@ -81,7 +81,5 @@ class SiteErrorsPlatformApiClientTest extends BasePlatformApiClient {
                 .first()
                 .usingRecursiveComparison()
                 .comparingOnlyFields("dataSource").isEqualTo("https://server/products.csv");
-
-
     }
 }
