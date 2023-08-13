@@ -4,6 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-public record Sites(String success,
+public record Sites(boolean success,
                     @JsonProperty("Sites") List<Site> sites) {
 }
