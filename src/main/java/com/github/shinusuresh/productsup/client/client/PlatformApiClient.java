@@ -2,6 +2,7 @@ package com.github.shinusuresh.productsup.client.client;
 
 import com.github.shinusuresh.productsup.client.domain.project.Projects;
 import com.github.shinusuresh.productsup.client.domain.sites.Sites;
+import com.github.shinusuresh.productsup.client.domain.sites.channels.Channels;
 import com.github.shinusuresh.productsup.client.domain.sites.errors.SiteErrors;
 import com.github.shinusuresh.productsup.client.domain.sites.history.ImportHistory;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -75,4 +76,23 @@ public interface PlatformApiClient {
      */
     @GetExchange("/sites/{id}/importhistory")
     ImportHistory siteImportHistory(@PathVariable(value = "id") Integer id);
+
+    /**
+     * Get Channels configured for a site
+     *
+     * @param id - Site id
+     * @return Channels
+     */
+    @GetExchange("/sites/{id}/channels")
+    Channels siteChannels(@PathVariable(value = "id") Integer id);
+
+    /**
+     * Get channels by site and channel id
+     *
+     * @param id        - Site id
+     * @param channelId - Channel id
+     * @return Channels
+     */
+    @GetExchange("/sites/{id}/channels/{channelId}")
+    Channels siteChannelsById(@PathVariable(value = "id") Integer id, @PathVariable(value = "channelId") Integer channelId);
 }
