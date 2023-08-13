@@ -95,4 +95,14 @@ public interface PlatformApiClient {
      */
     @GetExchange("/sites/{id}/channels/{channelId}")
     Channels siteChannelsById(@PathVariable(value = "id") Integer id, @PathVariable(value = "channelId") Integer channelId);
+
+    /**
+     * Get history of a channel.
+     *
+     * @param id        - Site id
+     * @param channelId - Channel id
+     * @return Channels
+     */
+    @GetExchange("/sites/{id}/channels/{channelId}/history")
+    Channels siteChannelHistory(@PathVariable(value = "id") Integer id, @PathVariable(value = "channelId") Integer channelId);
 }
