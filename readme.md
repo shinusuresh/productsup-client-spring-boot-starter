@@ -30,3 +30,8 @@ The library is published on Maven Central. To add the library into your spring p
 ```
 implementation 'com.github.shinusuresh:productsup-client-spring-boot-starter:0.1.1' 
 ```
+
+## How to use
+
+``` 
+```
