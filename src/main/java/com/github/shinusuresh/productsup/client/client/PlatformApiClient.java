@@ -1,5 +1,6 @@
 package com.github.shinusuresh.productsup.client.client;
 
+import com.github.shinusuresh.productsup.client.domain.product.Products;
 import com.github.shinusuresh.productsup.client.domain.project.Projects;
 import com.github.shinusuresh.productsup.client.domain.sites.Sites;
 import com.github.shinusuresh.productsup.client.domain.sites.channels.Channels;
@@ -105,4 +106,14 @@ public interface PlatformApiClient {
      */
     @GetExchange("/sites/{id}/channels/{channelId}/history")
     Channels siteChannelHistory(@PathVariable(value = "id") Integer id, @PathVariable(value = "channelId") Integer channelId);
+
+    /**
+     * Gets products.
+     *
+     * @param id    - Site Id
+     * @param stage - Stage names. Valid stages are import, intermediate, export, channel.
+     * @return Products
+     */
+    @GetExchange("/site/{id}/stage/{stageName}")
+    Products getProducts(@PathVariable(value = "id") Integer id, @PathVariable(value = "stageName") String stage);
 }
