@@ -7,6 +7,7 @@ import com.github.shinusuresh.productsup.client.domain.sites.channels.Channels;
 import com.github.shinusuresh.productsup.client.domain.sites.errors.SiteErrors;
 import com.github.shinusuresh.productsup.client.domain.sites.history.ImportHistory;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.service.annotation.GetExchange;
 
 /**
@@ -115,5 +116,7 @@ public interface PlatformApiClient {
      * @return Products
      */
     @GetExchange("/site/{id}/stage/{stageName}")
-    Products getProducts(@PathVariable(value = "id") Integer id, @PathVariable(value = "stageName") String stage);
+    Products getProducts(@PathVariable(value = "id") Integer id, @PathVariable(value = "stageName") String stage,
+                         @RequestParam(value = "limit", defaultValue = "100") Integer limit,
+                         @RequestParam(value = "offset", defaultValue = "0") Integer offset);
 }

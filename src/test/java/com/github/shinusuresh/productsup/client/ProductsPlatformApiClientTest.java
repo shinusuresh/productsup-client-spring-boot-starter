@@ -41,7 +41,7 @@ class ProductsPlatformApiClientTest extends BasePlatformApiClient {
                                              }
                                             """
                             ));
-            var productsList = platformApiClient().getProducts(123, "import");
+            var productsList = platformApiClient().getProducts(123, "import", null, null);
             var products = productsList.products()
                     .stream()
                     .findFirst()
