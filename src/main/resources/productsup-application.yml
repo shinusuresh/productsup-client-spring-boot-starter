@@ -1,2 +1,4 @@
 productsup:
   token: "client_id:client_secret"
+  stream:
+    enabled: false
