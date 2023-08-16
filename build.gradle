@@ -1,5 +1,6 @@
 plugins {
     id 'java-library'
+    id 'jacoco'
     id 'maven-publish'
     id 'signing'
     id 'io.github.gradle-nexus.publish-plugin' version '2.0.0-rc-1'
@@ -77,6 +78,12 @@ publishing {
                 }
             }
         }
+    }
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = true
     }
 }
 
