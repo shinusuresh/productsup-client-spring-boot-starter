@@ -6,7 +6,7 @@ plugins {
     id "org.sonarqube" version "4.2.1.3168"
 }
 
-group = 'com.github.shinusuresh'
+group = 'io.github.shinusuresh'
 version = '0.1.1'
 description = 'Spring boot library for ProductsUp platform'
 java.sourceCompatibility = JavaVersion.VERSION_17
@@ -53,7 +53,7 @@ publishing {
                     name = project.description
                     description = project.description
                 }
-                url = 'https://github.com/NET-A-PORTER/spring-data-solr'
+                url = 'https://github.com/shinusuresh/productsup-client-spring-boot-starter.git'
 
                 licenses {
                     license {
@@ -69,9 +69,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection = 'scm:git:https://github.com/NET-A-PORTER/spring-data-solr.git'
-                    developerConnection = 'scm:git:git://github.com/NET-A-PORTER/spring-data-solr.git'
-                    url = 'https://github.com/NET-A-PORTER/spring-data-solr'
+                    connection = 'scm:git:https://github.com/shinusuresh/productsup-client-spring-boot-starter.git'
+                    developerConnection = 'scm:git:git://github.com/shinusuresh/productsup-client-spring-boot-starter.git'
+                    url = 'https://github.com/shinusuresh/productsup-client-spring-boot-starter.git'
                 }
             }
         }
