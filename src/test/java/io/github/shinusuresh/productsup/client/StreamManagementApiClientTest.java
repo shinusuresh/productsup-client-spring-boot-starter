@@ -2,14 +2,13 @@ package io.github.shinusuresh.productsup.client;
 
 import io.github.shinusuresh.productsup.client.client.StreamApiClient;
 import io.github.shinusuresh.productsup.client.config.ProductsUpAutoConfiguration;
-import io.github.shinusuresh.productsup.client.domain.streams.Stream;
-import io.github.shinusuresh.productsup.client.domain.streams.StreamAttributes;
-import io.github.shinusuresh.productsup.client.domain.streams.StreamType;
+import io.github.shinusuresh.productsup.client.domain.streams.*;
 import io.github.shinusuresh.productsup.client.domain.streams.create.CreateStream;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockserver.client.MockServerClient;
 import org.mockserver.junit.jupiter.MockServerSettings;
+import org.mockserver.mock.OpenAPIExpectation;
+import org.mockserver.model.JsonBody;
 import org.mockserver.model.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +19,6 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockserver.mock.OpenAPIExpectation.openAPIExpectation;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
@@ -41,7 +39,7 @@ class StreamManagementApiClientTest {
     StreamManagementApiClientTest(MockServerClient mockServerClient) {
         this.mockServerClient = mockServerClient;
         this.mockServerClient.upsert(
-                openAPIExpectation("https://api-docs.productsup.io/spec/stream-api-oas3-definition.yaml")
+                OpenAPIExpectation.openAPIExpectation("https://api-docs.productsup.io/spec/stream-api-oas3-definition.yaml")
                         .withOperationsAndResponses(Map.of(
                                 "GET /streams", "200",
                                 "POST /streams", "201"
@@ -75,55 +73,61 @@ class StreamManagementApiClientTest {
     }
 
     @Test()
-    @Disabled("Enable after fixing the upsert issue with mockserver")
     void testFailCreateStreams() {
-        this.mockServerClient.clear("POST /streams");
+        this.mockServerClient.reset();
         this.mockServerClient
                 .when(request()
                         .withMethod("POST")
                         .withPath("/streams")
                         .withContentType(MediaType.parse("application/vnd.api+json"))
-                        .withBody("""
+                        .withHeader("Authorization", "Bearer xyz")
+                        .withBody(new JsonBody("""
                                 {
                                     "data": {
                                         "type": "stream",
-                                        "attributes" : {
-                                          "name" : "Test error Stream",
-                                          "type" : "chunked"
+                                        "attributes": {
+                                          "name": "Test error Stream",
+                                          "type": "chunked"
                                         }
                                       }
                                  }
-                                """))
+                                """)))
                 .respond(response()
                         .withStatusCode(409)
                         .withContentType(MediaType.APPLICATION_JSON)
-                        .withBody(
-                                """
-                                        {
-                                           "errors": [
-                                             {
-                                               "id": "e1a6f644-3d72-44e9-83e0-f64a640cb04c",
-                                               "status": "409",
-                                               "code": "13579",
-                                               "title": "Validation error happened with stream payload",
-                                               "detail": "",
-                                               "meta": {
-                                                 "duplicate": {
-                                                   "type": "stream",
-                                                   "id": "123",
-                                                   "links": {
-                                                     "self": "/streams/123"
-                                                   }
-                                                 }
-                                               }
-                                             }
-                                           ]
+                        .withBody(new JsonBody("""
+                                 {
+                                   "errors": [{
+                                       "id": "e1a6f644-3d72-44e9-83e0-f64a640cb04c",
+                                       "status": "409",
+                                       "code": "13579",
+                                       "title": "Validation error happened with stream payload",
+                                       "detail": "",
+                                       "meta": {
+                                         "duplicate": {
+                                           "type": "stream",
+                                           "id": "123",
+                                           "links": {
+                                             "self": "/streams/123"
+                                           }
                                          }
-                                        """
-                        ));
+                                       }
+                                     }]
+                                 }
+                                """
+                        )));
         var data = new CreateStream(new Stream(null, "stream",
                 new StreamAttributes("Test error Stream", StreamType.CHUNKED, null, null), null, null));
 
-        assertThrows(WebClientResponseException.class, () -> streamApiClient.createStream(data));
+        var exception = assertThrows(WebClientResponseException.class, () -> streamApiClient.createStream(data));
+        var errors = exception.getResponseBodyAs(StreamErrors.class);
+        assert errors != null;
+        assertThat(errors.errors()).hasSize(1);
+        assertThatIterable(errors.errors())
+                .first()
+                .returns("e1a6f644-3d72-44e9-83e0-f64a640cb04c", from(StreamError::id))
+                .returns("409", from(StreamError::status))
+                .returns("13579", from(StreamError::code))
+                .returns("Validation error happened with stream payload", from(StreamError::title));
     }
 }

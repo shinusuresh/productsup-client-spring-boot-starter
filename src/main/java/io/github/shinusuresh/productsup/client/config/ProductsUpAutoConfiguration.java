@@ -2,6 +2,7 @@ package io.github.shinusuresh.productsup.client.config;
 
 import io.github.shinusuresh.productsup.client.client.PlatformApiClient;
 import io.github.shinusuresh.productsup.client.client.StreamApiClient;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -18,6 +19,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
  */
 @Configuration
 @EnableConfigurationProperties(ProductsUpProperties.class)
+@Slf4j
 public class ProductsUpAutoConfiguration {
 
 

@@ -29,10 +29,39 @@ The library is published on Maven Central. To add the library into your spring p
 ### Gradle
 
 ```
-implementation 'com.github.shinusuresh:productsup-client-spring-boot-starter:0.1.1' 
+implementation 'io.github.shinusuresh:productsup-client-spring-boot-starter:0.1.1' 
 ```
 
 ## How to use
 
+### Configuration
+
 ``` 
+#Add the following properties
+productsup.token=<YOUR Platform API token with ProductsUP>
+
+#If you are using stream
+productsup.stream.enabled=true
+productsup.authorization-token=Bearer <Your Stream PAT>
+```
+
+### Code
+
+#### Using Platform API client
+```java
+private final PlatformApiClient platformApiClient;
+var sites = this.platformApiClient.getSites();
+```
+
+#### Using Stream API client
+```java
+private final StreamApiClient streamApiClient;
+var streams = this.streamApiClient.listStreams();
+```
+
+> For error scenarios `WebClientResponseException` will be thrown. Handle the exception to get the erorr data
+
+```java
+var exception = assertThrows(WebClientResponseException.class, () -> streamApiClient.createStream(data));
+var errors = exception.getResponseBodyAs(StreamErrors.class);
 ```

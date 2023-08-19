@@ -18,9 +18,9 @@ import java.util.Date;
 public record StreamAttributes(String name,
                                StreamType type,
                                @JsonProperty("createdAt")
-                               @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss+00:00")
+                               @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
                                Date createdAt,
                                @JsonProperty("updatedAt")
-                               @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss+00:00")
+                               @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
                                Date updatedAt) {
 }
