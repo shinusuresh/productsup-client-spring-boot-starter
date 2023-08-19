@@ -66,9 +66,8 @@ class StreamManagementApiClientTest {
     void testSuccessCreateStreams() {
         var data = new CreateStream(new Stream(null, "stream",
                 new StreamAttributes("Test Stream", StreamType.CHUNKED, null, null), null, null));
-        var list = streamApiClient.createStream(data);
-        assertThat(list.getData().id()).isEqualTo("some_string_value");
-        assertThat(list.getErrors()).isNull();
+        var createStreamResponse = streamApiClient.createStream(data);
+        assertThat(createStreamResponse.data().id()).isEqualTo("some_string_value");
 
     }
 
