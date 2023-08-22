@@ -81,6 +81,14 @@ publishing {
     }
 }
 
+nexusPublishing {
+    repositories {
+        sonatype {
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+        }
+    }
+}
+
 jacocoTestReport {
     reports {
         xml.required = true
@@ -93,4 +101,11 @@ sonar {
         property "sonar.organization", "shinusuresh"
         property "sonar.host.url", "https://sonarcloud.io"
     }
+}
+
+signing {
+    def signingKey = findProperty("signingKey")
+    def signingPassword = findProperty("signingPassword")
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign publishing.publications.mavenJava
 }

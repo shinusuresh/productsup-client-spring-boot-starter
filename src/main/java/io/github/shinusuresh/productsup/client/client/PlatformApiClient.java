@@ -1,5 +1,7 @@
 package io.github.shinusuresh.productsup.client.client;
 
+import io.github.shinusuresh.productsup.client.domain.process.ProcessRequest;
+import io.github.shinusuresh.productsup.client.domain.process.ProcessResponse;
 import io.github.shinusuresh.productsup.client.domain.product.Products;
 import io.github.shinusuresh.productsup.client.domain.project.Projects;
 import io.github.shinusuresh.productsup.client.domain.sites.Sites;
@@ -7,8 +9,10 @@ import io.github.shinusuresh.productsup.client.domain.sites.channels.Channels;
 import io.github.shinusuresh.productsup.client.domain.sites.errors.SiteErrors;
 import io.github.shinusuresh.productsup.client.domain.sites.history.ImportHistory;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.service.annotation.GetExchange;
+import org.springframework.web.service.annotation.PostExchange;
 
 /**
  * Client for Platform API's <a href="https://api-docs.productsup.io/#platform-api">PLatform API's</a>
@@ -119,4 +123,14 @@ public interface PlatformApiClient {
     Products getProducts(@PathVariable(value = "id") Integer id, @PathVariable(value = "stageName") String stage,
                          @RequestParam(value = "limit", defaultValue = "100") Integer limit,
                          @RequestParam(value = "offset", defaultValue = "0") Integer offset);
+
+
+    /**
+     * Process data.
+     *
+     * @param id - Site id
+     * @return ProcessResponse
+     */
+    @PostExchange("/process/{id}")
+    ProcessResponse process(@PathVariable(value = "id") Integer id, @RequestBody ProcessRequest processRequest);
 }
