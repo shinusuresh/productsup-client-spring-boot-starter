@@ -8,7 +8,7 @@ plugins {
 }
 
 group = 'io.github.shinusuresh'
-version = '0.1.1'
+version = hasProperty('version') ? property('version') : '0.1.1'
 description = 'Spring boot library for ProductsUp platform'
 java.sourceCompatibility = JavaVersion.VERSION_17
 
