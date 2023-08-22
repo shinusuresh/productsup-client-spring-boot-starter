@@ -6,7 +6,15 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Stream type
  */
 public enum StreamType {
+
+    /**
+     * Chunked stream type.
+     */
     CHUNKED("chunked"),
+
+    /**
+     * Referenced stream type.
+     */
     REFERENCED("referenced");
 
     private final String type;

@@ -12,6 +12,10 @@ import org.springframework.web.service.annotation.PostExchange;
  */
 public interface StreamApiClient {
 
+    /**
+     * Get
+     * @return
+     */
     @GetExchange("/streams")
     Data listStreams();
 
