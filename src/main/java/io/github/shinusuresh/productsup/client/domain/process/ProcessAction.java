@@ -7,10 +7,26 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum ProcessAction {
 
+    /**
+     * Import data from source.
+     */
     IMPORT("import"),
+
+    /**
+     * Export data.
+     */
     EXPORT("export"),
+    /**
+     * Channel process.
+     */
     CHANNEL("channel"),
+    /**
+     * Export all.
+     */
     EXPORT_ALL("export-all"),
+    /**
+     * Perform import and export.
+     */
     ALL("all");
 
     private final String status;
