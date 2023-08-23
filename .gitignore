@@ -43,3 +43,6 @@ bin/
 
 ### IDEA
 .idea
+
+###Gradle
+gradle.properties

@@ -5,6 +5,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
+/**
+ * History
+ * @param id
+ * @param siteId
+ * @param siteChannelId
+ * @param exportTime
+ * @param exportStart
+ * @param productCount
+ * @param productCountNow
+ * @param productCountPrevious
+ * @param processStatus
+ * @param pid
+ * @param productCountNew
+ * @param productCountModified
+ * @param productCountDeleted
+ * @param productCountUnChanged
+ * @param uploaded
+ */
 public record History(String id,
                       @JsonProperty("site_id")
                       String siteId,

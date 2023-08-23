@@ -10,10 +10,10 @@ import java.util.List;
 /**
  * Project response.
  *
- * @param id
- * @param name
- * @param createdAt
- * @param links
+ * @param id        - Project id.
+ * @param name      - Project name.
+ * @param createdAt - Created timestamp.
+ * @param links     - Links.
  */
 public record Project(String id, String name,
                       @JsonProperty("created_at")

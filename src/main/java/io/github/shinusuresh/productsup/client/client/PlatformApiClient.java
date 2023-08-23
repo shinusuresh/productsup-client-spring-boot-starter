@@ -8,6 +8,7 @@ import io.github.shinusuresh.productsup.client.domain.sites.Sites;
 import io.github.shinusuresh.productsup.client.domain.sites.channels.Channels;
 import io.github.shinusuresh.productsup.client.domain.sites.errors.SiteErrors;
 import io.github.shinusuresh.productsup.client.domain.sites.history.ImportHistory;
+import io.github.shinusuresh.productsup.client.domain.streams.list.ListStreamResponse;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +22,7 @@ public interface PlatformApiClient {
 
     /**
      * List all projects in your account.
+     * <a href="https://api-docs.productsup.io/#platform-api-projects-get">Get all projects</a>
      *
      * @return Projects
      */
@@ -30,6 +32,7 @@ public interface PlatformApiClient {
 
     /**
      * Get sites by project id
+     * <a href="https://api-docs.productsup.io/#platform-api-sites">Get sites by project id</a>
      *
      * @param projectId - Project id
      * @return Sites
@@ -39,6 +42,7 @@ public interface PlatformApiClient {
 
     /**
      * Get all sites
+     * <a href="https://api-docs.productsup.io/#platform-api-sites">Get all sites</a>
      *
      * @return Sites
      */
@@ -47,6 +51,7 @@ public interface PlatformApiClient {
 
     /**
      * Gets sites by tag.
+     * <a href="https://api-docs.productsup.io/#platform-api-sites-get">Get Sites by tag</a>
      *
      * @param tag Format of parameter is tagName:tagValue
      * @return Sites
@@ -57,6 +62,7 @@ public interface PlatformApiClient {
 
     /**
      * Get sites by id.
+     * <a href="https://api-docs.productsup.io/#platform-api-sites">Get Sites by id</a>
      *
      * @param id - Site id
      * @return Sites
@@ -66,6 +72,7 @@ public interface PlatformApiClient {
 
     /**
      * Get errors in a site.
+     * <a href="https://api-docs.productsup.io/#platform-api-site-errors">Site Errors</a>
      *
      * @param id - Site id
      * @return SiteErrors
@@ -76,6 +83,7 @@ public interface PlatformApiClient {
 
     /**
      * Gets sites import history.
+     * <a href="https://api-docs.productsup.io/#platform-api-import-history">Import History</a>
      *
      * @param id - Site id
      * @return - {@link ImportHistory}
@@ -85,6 +93,7 @@ public interface PlatformApiClient {
 
     /**
      * Get Channels configured for a site
+     * <a href="https://api-docs.productsup.io/#platform-api-channels-get">Get Channels</a>
      *
      * @param id - Site id
      * @return Channels
@@ -94,6 +103,7 @@ public interface PlatformApiClient {
 
     /**
      * Get channels by site and channel id
+     * <a href="https://api-docs.productsup.io/#platform-api-channels-get">Get Channels</a>
      *
      * @param id        - Site id
      * @param channelId - Channel id
@@ -104,6 +114,7 @@ public interface PlatformApiClient {
 
     /**
      * Get history of a channel.
+     * <a href="https://api-docs.productsup.io/#platform-api-channel-history">Channel History</a>
      *
      * @param id        - Site id
      * @param channelId - Channel id
@@ -114,6 +125,7 @@ public interface PlatformApiClient {
 
     /**
      * Gets products.
+     * <a href="https://api-docs.productsup.io/#platform-api-product-data-read-get">Get product data</a>
      *
      * @param id    - Site Id
      * @param stage - Stage names. Valid stages are import, intermediate, export, channel.
@@ -126,11 +138,23 @@ public interface PlatformApiClient {
 
 
     /**
-     * Process data.
+     * Start Process data for a site.
+     * <a href="https://api-docs.productsup.io/#platform-api-process-data">Process data</a>
      *
      * @param id - Site id
      * @return ProcessResponse
      */
     @PostExchange("/process/{id}")
     ProcessResponse process(@PathVariable(value = "id") Integer id, @RequestBody ProcessRequest processRequest);
+
+    /**
+     * Get streams for a site.
+     * <a href="https://api-docs.productsup.io/#platform-api-site-stream-data-sources-list-stream-datasources">
+     * List stream datasources</a>
+     *
+     * @param id - Site id.
+     * @return ListStreamResponse
+     */
+    @GetExchange("/sites/{id}/streams")
+    ListStreamResponse listStreamsBySiteId(@PathVariable(value = "id") Integer id);
 }

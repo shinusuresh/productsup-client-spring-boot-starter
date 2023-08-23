@@ -7,8 +7,8 @@ import java.util.List;
 /**
  * Project response.
  *
- * @param success
- * @param projects
+ * @param success - Success status.
+ * @param projects - List of {@link Project}.
  */
 public record Projects(boolean success,
                        @JsonProperty("Projects") List<Project> projects) {

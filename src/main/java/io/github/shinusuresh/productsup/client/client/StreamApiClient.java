@@ -13,12 +13,22 @@ import org.springframework.web.service.annotation.PostExchange;
 public interface StreamApiClient {
 
     /**
-     * Get
-     * @return
+     * List all streams.
+     * <a href="https://api-docs.productsup.io/#stream-api-stream-management-list-stream">List Stream</a>
+     *
+     * @return - {@link Data}
      */
     @GetExchange("/streams")
     Data listStreams();
 
+    /**
+     * Create stream.
+     * <a href="https://api-docs.productsup.io/#stream-api-stream-management-stream-creation">Create Stream
+     * </a>
+     *
+     * @param data - {@link CreateStream}
+     * @return - {@link CreateStreamResponse}
+     */
     @PostExchange(value = "/streams", contentType = "application/vnd.api+json")
     CreateStreamResponse createStream(@RequestBody CreateStream data);
 }

@@ -7,8 +7,8 @@ import java.util.List;
 /**
  * Site errors response.
  *
- * @param success
- * @param errors
+ * @param success - Success status
+ * @param errors - List of {@link Error}
  */
 public record SiteErrors(boolean success,
                          @JsonProperty("Errors") List<Error> errors) {
