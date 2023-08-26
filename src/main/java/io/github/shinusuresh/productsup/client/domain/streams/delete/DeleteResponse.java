@@ -1,13 +1,13 @@
-package io.github.shinusuresh.productsup.client.domain.streams.upload;
+package io.github.shinusuresh.productsup.client.domain.streams.delete;
 
 import io.github.shinusuresh.productsup.client.domain.streams.ResponseData;
 
 /**
- * Upload products response.
+ * Delete response.
  *
  * @param data - {@link ResponseData}
  */
-public record UploadResponse(
+public record DeleteResponse(
         ResponseData data
 ) {
 }

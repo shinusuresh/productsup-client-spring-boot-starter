@@ -1,4 +1,6 @@
-package io.github.shinusuresh.productsup.client.domain.streams.upload;
+package io.github.shinusuresh.productsup.client.domain.streams;
+
+import io.github.shinusuresh.productsup.client.domain.streams.upload.UploadAttributes;
 
 /**
  * Upload response data.
@@ -7,7 +9,7 @@ package io.github.shinusuresh.productsup.client.domain.streams.upload;
  * @param id - Batch id.
  * @param attributes - Upload attributes - {@link UploadAttributes}
  */
-public record UploadResponseData(
+public record ResponseData(
         String type,
         String id,
         UploadAttributes attributes
