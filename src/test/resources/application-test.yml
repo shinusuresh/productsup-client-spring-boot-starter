@@ -1,3 +1,6 @@
 productsup:
   platform-endpoint: http://localhost:8787
   stream-endpoint: http://localhost:8787
+logging:
+  level:
+    org.springframework.http: DEBUG

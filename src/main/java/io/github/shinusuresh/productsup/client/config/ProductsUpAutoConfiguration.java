@@ -1,5 +1,7 @@
 package io.github.shinusuresh.productsup.client.config;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.shinusuresh.productsup.client.client.PlatformApiClient;
 import io.github.shinusuresh.productsup.client.client.StreamApiClient;
 import lombok.extern.slf4j.Slf4j;
@@ -67,9 +69,13 @@ public class ProductsUpAutoConfiguration {
     @Bean
     public StreamApiClient streamApiClient() {
         Assert.notNull(productsUpProperties.getAuthorizationToken(), () -> "Missing productsup.authorization-token");
+        var objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
         var webClient = WebClient.builder()
                 .baseUrl(productsUpProperties.getStreamEndpoint())
                 .defaultHeaders(httpHeaders -> httpHeaders.add(HttpHeaders.AUTHORIZATION, productsUpProperties.getAuthorizationToken()))
+                /*.codecs(clientCodecConfigurer -> clientCodecConfigurer.defaultCodecs()
+                        .jackson2JsonDecoder(new Jackson2JsonDecoder(objectMapper, MediaType.APPLICATION_JSON)))*/
                 .build();
         var factory = HttpServiceProxyFactory
                 .builder(WebClientAdapter.forClient(webClient))
