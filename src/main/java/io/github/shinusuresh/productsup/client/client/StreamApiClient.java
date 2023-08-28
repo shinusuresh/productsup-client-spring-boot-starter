@@ -67,4 +67,17 @@ public interface StreamApiClient {
     @DeleteExchange(value = "/streams/{streamId}/products/{productId}", contentType = "application/vnd.api+json")
     DeleteResponse deleteProduct(@PathVariable("streamId") String streamId, @PathVariable("productId") String productId);
 
+    /**
+     * Delete all products.
+     * <p>
+     *     <a href="https://api-docs.productsup.io/#stream-api-delete-products-delete-a-product-via-the-url">Delete a product via the URL</a>
+     * </p>
+     * @param streamId - Stream id
+     *
+     * @return - {@link DeleteResponse}
+     */
+    @DeleteExchange(value = "/streams/{streamId}/products?all=true", contentType = "application/vnd.api+json")
+    DeleteResponse deleteAllProducts(@PathVariable("streamId") String streamId);
+
+
 }
