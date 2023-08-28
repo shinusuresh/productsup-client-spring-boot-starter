@@ -4,9 +4,9 @@ import io.github.shinusuresh.productsup.client.domain.streams.Data;
 import io.github.shinusuresh.productsup.client.domain.streams.create.CreateStream;
 import io.github.shinusuresh.productsup.client.domain.streams.create.CreateStreamResponse;
 import io.github.shinusuresh.productsup.client.domain.streams.delete.DeleteResponse;
-import org.springframework.web.bind.annotation.PathVariable;
 import io.github.shinusuresh.productsup.client.domain.streams.upload.UploadResponse;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.service.annotation.DeleteExchange;
 import org.springframework.web.service.annotation.GetExchange;
@@ -39,6 +39,18 @@ public interface StreamApiClient {
     @PostExchange(value = "/streams", contentType = "application/vnd.api+json")
     CreateStreamResponse createStream(@RequestBody CreateStream data);
 
+
+    /**
+     * Remove a stream
+     * <p>
+     * <a href="https://api-docs.productsup.io/#stream-api-stream-management-remove-stream">Remove Stream</a>
+     * </p>
+     *
+     * @param streamId - Stream id to remove.
+     */
+    @DeleteExchange(value = "/streams/{streamId}", contentType = "application/vnd.api+json")
+    void removeStream(@PathVariable(value = "streamId") String streamId);
+
     /**
      * Referenced Stream upload of product data.
      * The content type of this request <code>application/json</code>
@@ -70,10 +82,10 @@ public interface StreamApiClient {
     /**
      * Delete all products.
      * <p>
-     *     <a href="https://api-docs.productsup.io/#stream-api-delete-products-delete-a-product-via-the-url">Delete a product via the URL</a>
+     * <a href="https://api-docs.productsup.io/#stream-api-delete-products-delete-a-product-via-the-url">Delete a product via the URL</a>
      * </p>
-     * @param streamId - Stream id
      *
+     * @param streamId - Stream id
      * @return - {@link DeleteResponse}
      */
     @DeleteExchange(value = "/streams/{streamId}/products?all=true", contentType = "application/vnd.api+json")

@@ -106,6 +106,7 @@ class DeleteDataSteamApiClientTest {
                         .withPathParameters(
                                 new Parameter("id", "[0-9]+")
                         )
+                        .withQueryStringParameter("all", "true")
                         .withContentType(MediaType.parse("application/vnd.api+json"))
                         .withHeader("Authorization", "Bearer xyz"))
                 .respond(response()
