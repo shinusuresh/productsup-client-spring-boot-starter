@@ -96,4 +96,63 @@ class DeleteDataSteamApiClientTest {
                         0, BatchStageStatus.Status.FAILURE, 1);
 
     }
+
+    @Test
+    void deleteAllProducts() {
+        this.mockServerClient
+                .when(request()
+                        .withMethod("DELETE")
+                        .withPath("/streams/{id}/products")
+                        .withPathParameters(
+                                new Parameter("id", "[0-9]+")
+                        )
+                        .withContentType(MediaType.parse("application/vnd.api+json"))
+                        .withHeader("Authorization", "Bearer xyz"))
+                .respond(response()
+                        .withStatusCode(202)
+                        .withContentType(MediaType.APPLICATION_JSON)
+                        .withBody(new JsonBody("""
+                                  {
+                                     "data": {
+                                       "type": "batch",
+                                       "id": "4b5dd7c1-afc6-4ad9-96a6-c5d4542d0228",
+                                       "attributes": {
+                                         "status": "processed",
+                                         "errorCount": 0,
+                                         "stages": {
+                                           "upload": {
+                                             "completedAt": "2021-12-21T21:12:21+00:00",
+                                             "status": "success",
+                                             "successCount": 1329,
+                                             "errorCount": 10,
+                                             "errors": [
+                                               {
+                                                 "message": "Syntax error",
+                                                 "occurrences": 1,
+                                                 "example": {
+                                                   "lineNumber": 0,
+                                                   "value": "{\\"id\\":\\"123\\"\\"name\\":\\"Product\\"}"
+                                                 }
+                                               }
+                                             ]
+                                           },
+                                           "processing": null
+                                         }
+                                       }
+                                     }
+                                   }
+                                """
+                        )));
+        var deleteResponse = streamApiClient.deleteAllProducts("83543218");
+        assertThat(deleteResponse.data())
+                .extracting(ResponseData::type, ResponseData::id,
+                        data -> data.attributes().status(),
+                        data -> data.attributes().errorCount(),
+                        data -> data.attributes().stages().upload().status(),
+                        data -> data.attributes().stages().upload().errors().size())
+                .containsExactly("batch", "4b5dd7c1-afc6-4ad9-96a6-c5d4542d0228",
+                        UploadAttributes.Status.PROCESSED,
+                        0, BatchStageStatus.Status.SUCCESS, 1);
+
+    }
 }
