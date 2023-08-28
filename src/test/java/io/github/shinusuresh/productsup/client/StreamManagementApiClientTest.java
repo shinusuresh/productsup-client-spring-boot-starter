@@ -18,6 +18,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
@@ -42,7 +43,8 @@ class StreamManagementApiClientTest {
                 OpenAPIExpectation.openAPIExpectation("https://api-docs.productsup.io/spec/stream-api-oas3-definition.yaml")
                         .withOperationsAndResponses(Map.of(
                                 "GET /streams", "200",
-                                "POST /streams", "201"
+                                "POST /streams", "201",
+                                "DELETE /streams/{streamId}", "204"
                         ))
         );
     }
@@ -68,7 +70,11 @@ class StreamManagementApiClientTest {
                 new StreamAttributes("Test Stream", StreamType.CHUNKED, null, null), null, null));
         var createStreamResponse = streamApiClient.createStream(data);
         assertThat(createStreamResponse.data().id()).isEqualTo("some_string_value");
+    }
 
+    @Test
+    void removeStream() {
+        assertDoesNotThrow(() -> streamApiClient.removeStream("83543218"));
     }
 
     @Test()
