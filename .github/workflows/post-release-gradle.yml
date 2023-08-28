@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          token: ${{ secrets.PAT }} # You need to create your own token with commit rights
+          token: ${{ secrets.18-bug-release-version-update }} # You need to create your own token with commit rights
           ref: main # The branch you want to commit to
 
 
