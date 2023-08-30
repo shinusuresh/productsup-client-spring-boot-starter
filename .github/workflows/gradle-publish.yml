@@ -46,4 +46,4 @@ jobs:
         git config --global user.name 'Shinu Suresh'
         git config --global user.email '2842927+shinusuresh@users.noreply.github.com'
         git commit -am "Bumping version of library after release"
-        git push
+        git push origin HEAD:main
