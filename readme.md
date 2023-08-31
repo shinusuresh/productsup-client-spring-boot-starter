@@ -22,14 +22,14 @@ The library is published on Maven Central. To add the library into your spring p
 <dependency>
   <groupId>com.github.shinusuresh</groupId>
   <artifactId>productsup-client-spring-boot-starter</artifactId>
-  <version>0.1.9</version>
+  <version>0.1.10</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```
-implementation 'io.github.shinusuresh:productsup-client-spring-boot-starter:0.1.9' 
+implementation 'io.github.shinusuresh:productsup-client-spring-boot-starter:0.1.10' 
 ```
 
 ## How to use
