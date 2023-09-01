@@ -39,7 +39,8 @@ implementation 'io.github.shinusuresh:productsup-client-spring-boot-starter:0.1.
 
 ``` 
 #Add the following properties
-productsup.token=<YO
+productsup.token=<Your platform api token>
+
 #If you are using stream
 productsup.stream.enabled=true
 productsup.authorization-token=Bearer <Your Stream PAT>
