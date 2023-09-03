@@ -1,6 +1,7 @@
 # Spring boot library for Products up platform integration
 
-[![Build status](https://github.com/shinusuresh/productsup-client-spring-boot-starter/actions/workflows/build.yml/badge.svg)](https://github.com/shinusuresh/productsup-client-spring-boot-starter/actions)
+[![Build status](https://github.com/shinusuresh/productsup-client-spring-boot-starter/actions/workflows/build.yml/badge.svg)](https://github.com/shinusuresh/productsup-client-spring-boot-starter/actions/workflows/build.yml)
+[![Maven central Package](https://github.com/shinusuresh/productsup-client-spring-boot-starter/actions/workflows/gradle-publish.yml/badge.svg)](https://github.com/shinusuresh/productsup-client-spring-boot-starter/actions/workflows/gradle-publish.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=shinusuresh_productsup-client-spring-boot-starter&metric=alert_status)](https://sonarcloud.io/dashboard?id=shinusuresh_productsup-client-spring-boot-starter)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=shinusuresh_productsup-client-spring-boot-starter&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=shinusuresh_productsup-client-spring-boot-starter)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=shinusuresh_productsup-client-spring-boot-starter&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=shinusuresh_productsup-client-spring-boot-starter)
