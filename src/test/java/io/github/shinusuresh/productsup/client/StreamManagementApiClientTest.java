@@ -4,6 +4,7 @@ import io.github.shinusuresh.productsup.client.client.StreamApiClient;
 import io.github.shinusuresh.productsup.client.config.ProductsUpAutoConfiguration;
 import io.github.shinusuresh.productsup.client.domain.streams.*;
 import io.github.shinusuresh.productsup.client.domain.streams.create.CreateStream;
+import io.github.shinusuresh.productsup.client.domain.streams.update.UpdateStream;
 import org.junit.jupiter.api.Test;
 import org.mockserver.client.MockServerClient;
 import org.mockserver.junit.jupiter.MockServerSettings;
@@ -18,8 +19,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
@@ -44,7 +44,8 @@ class StreamManagementApiClientTest {
                         .withOperationsAndResponses(Map.of(
                                 "GET /streams", "200",
                                 "POST /streams", "201",
-                                "DELETE /streams/{streamId}", "204"
+                                "DELETE /streams/{streamId}", "204",
+                                "PATCH /streams/{streamId}", "200"
                         ))
         );
     }
@@ -75,6 +76,20 @@ class StreamManagementApiClientTest {
     @Test
     void removeStream() {
         assertDoesNotThrow(() -> streamApiClient.removeStream("83543218"));
+    }
+
+    @Test
+    void testUpdateStream() {
+        var updateStreamRequest = new UpdateStream(new Stream("123", "stream",
+                new StreamAttributes("Product data stream", null, null, null), null, null));
+        var updateStreamResponse = streamApiClient.updateStream("83543218", updateStreamRequest);
+        assertThat(updateStreamResponse.data())
+                .extracting(Stream::id, Stream::type,
+                        data -> data.attributes().name(),
+                        data -> data.attributes().type())
+                .containsExactly("some_string_value", "stream", "Product data stream", StreamType.CHUNKED);
+
+
     }
 
     @Test()

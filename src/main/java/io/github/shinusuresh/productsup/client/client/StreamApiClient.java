@@ -4,12 +4,15 @@ import io.github.shinusuresh.productsup.client.domain.streams.Data;
 import io.github.shinusuresh.productsup.client.domain.streams.create.CreateStream;
 import io.github.shinusuresh.productsup.client.domain.streams.create.CreateStreamResponse;
 import io.github.shinusuresh.productsup.client.domain.streams.delete.DeleteResponse;
+import io.github.shinusuresh.productsup.client.domain.streams.update.UpdateStream;
+import io.github.shinusuresh.productsup.client.domain.streams.update.UpdateStreamResponse;
 import io.github.shinusuresh.productsup.client.domain.streams.upload.UploadResponse;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.service.annotation.DeleteExchange;
 import org.springframework.web.service.annotation.GetExchange;
+import org.springframework.web.service.annotation.PatchExchange;
 import org.springframework.web.service.annotation.PostExchange;
 
 import java.util.Map;
@@ -41,7 +44,18 @@ public interface StreamApiClient {
 
 
     /**
-     * Remove a stream
+     * Update a stream. Only stream name can be updated.
+     * <a href="https://api-docs.productsup.io/#stream-api-stream-management-update-stream">Update Stream</a>
+     *
+     * @param updateStream - {@link UpdateStream}
+     * @return - {@link UpdateStreamResponse}
+     */
+    @PatchExchange(value = "/streams/{streamId}", contentType = "application/vnd.api+json")
+    UpdateStreamResponse updateStream(@PathVariable("streamId") String streamId, @RequestBody UpdateStream updateStream);
+
+
+    /**
+     * Remove a stream.
      * <p>
      * <a href="https://api-docs.productsup.io/#stream-api-stream-management-remove-stream">Remove Stream</a>
      * </p>
@@ -90,6 +104,4 @@ public interface StreamApiClient {
      */
     @DeleteExchange(value = "/streams/{streamId}/products?all=true", contentType = "application/vnd.api+json")
     DeleteResponse deleteAllProducts(@PathVariable("streamId") String streamId);
-
-
 }
