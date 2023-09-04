@@ -28,14 +28,14 @@ import static org.mockserver.model.HttpResponse.response;
 })
 @ActiveProfiles(value = "test")
 @MockServerSettings(ports = {8787})
-class UploadDataStreamApiClientTest {
+class UploadReferencedDataStreamApiClientTest {
 
     private final MockServerClient mockServerClient;
 
     @Autowired
     private StreamApiClient streamApiClient;
 
-    public UploadDataStreamApiClientTest(MockServerClient mockServerClient) {
+    public UploadReferencedDataStreamApiClientTest(MockServerClient mockServerClient) {
         this.mockServerClient = mockServerClient;
     }
 
