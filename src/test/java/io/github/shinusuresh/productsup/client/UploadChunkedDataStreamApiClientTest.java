@@ -6,6 +6,7 @@ import io.github.shinusuresh.productsup.client.data.BaseStreamData;
 import io.github.shinusuresh.productsup.client.domain.streams.ResponseData;
 import io.github.shinusuresh.productsup.client.domain.streams.upload.BatchStageStatus;
 import io.github.shinusuresh.productsup.client.domain.streams.upload.UploadAttributes;
+import io.github.shinusuresh.productsup.client.domain.streams.upload.UploadResponse;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import org.mockserver.model.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.util.List;
 
@@ -42,9 +44,9 @@ class UploadChunkedDataStreamApiClientTest {
         this.mockServerClient = mockServerClient;
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     void uploadChunkedData() {
+        this.mockServerClient.reset();
         this.mockServerClient
                 .when(request()
                         .withMethod("POST")
@@ -110,12 +112,97 @@ class UploadChunkedDataStreamApiClientTest {
 
     }
 
+    @Test
+    void testUploadEmptyPayloadTest() {
+        this.mockServerClient.reset();
+        this.mockServerClient
+                .when(request()
+                        .withMethod("POST")
+                        .withPath("/streams/{id}/products")
+                        .withPathParameters(new Parameter("id", "[0-9]+"))
+                        .withContentType(MediaType.parse("application/x-ndjson"))
+                        .withHeader("Authorization", "Bearer xyz")
+                        .withBody(""))
+                .respond(response()
+                        .withStatusCode(422)
+                        .withContentType(MediaType.APPLICATION_JSON)
+                        .withBody(new JsonBody("""
+                                  {
+                                        "data": {
+                                            "type": "batch",
+                                            "id": "6895f313-5fe1-4fa5-b057-c9934b21e322",
+                                            "attributes": {
+                                                "status": "failed",
+                                                "errorCount": 1,
+                                                "stages": {
+                                                    "upload": {
+                                                        "completedAt": "2023-09-05T13:45:21+02:00",
+                                                        "status": "failure",
+                                                        "successCount": 0,
+                                                        "errorCount": 1,
+                                                        "errors": [
+                                                            {
+                                                                "message": "Empty payload",
+                                                                "occurrences": 1,
+                                                                "example": {
+                                                                    "lineNumber": 1,
+                                                                    "value": ""
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "processing": null
+                                                }
+                                            },
+                                            "relationships": {
+                                                "stream": {
+                                                    "data": {
+                                                        "type": "stream",
+                                                        "id": "15271"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "relationships": {
+                                            "stream": {
+                                                "data": {
+                                                    "type": "stream",
+                                                    "id": "15271"
+                                                }
+                                            }
+                                        }
+                                    }
+                                """
+                        )));
+
+        try {
+            streamApiUploadClient.uploadChunkeddData("83543218", List.of(new SampleData()));
+        } catch (WebClientResponseException exception) {
+            var errors = exception.getResponseBodyAs(UploadResponse.class);
+            assert errors != null;
+            assertThat(errors.data())
+                    .extracting(ResponseData::type, ResponseData::id,
+                            responseData -> responseData.attributes().errorCount(),
+                            responseData -> responseData.attributes().status(),
+                            responseData -> responseData.attributes().stages().upload().status(),
+                            responseData -> responseData.attributes().stages().upload().errors().size())
+                    .containsExactly("batch", "6895f313-5fe1-4fa5-b057-c9934b21e322",
+                            1, UploadAttributes.Status.FAILED,
+                            BatchStageStatus.Status.FAILURE, 1);
+        }
+    }
+
+
     @EqualsAndHashCode(callSuper = true)
     @Data
     public static class SampleData extends BaseStreamData {
 
         private String title;
         private String price;
+
+        public SampleData() {
+            super();
+        }
 
         public SampleData(String id, String title, String price) {
             super(id);
