@@ -61,7 +61,17 @@ private final StreamApiClient streamApiClient;
 var streams = this.streamApiClient.listStreams();
 ```
 
-> For error scenarios `WebClientResponseException` will be thrown. Handle the exception to get the erorr data
+### Using Stream API upload client for NDJSON payloads
+```java
+private final StreamApiUploadClient streamUploadApiClient;
+var streams = this.streamUploadApiClient.uploadChunkeddData(<stream id>, <payload>);
+```
+
+> Payload has to be of a `List<? extends BaseStreamData>`
+
+### Error handling
+
+For error scenarios `WebClientResponseException` will be thrown. Handle the exception to get the erorr data
 
 ```java
 var exception = assertThrows(WebClientResponseException.class, () -> streamApiClient.createStream(data));
