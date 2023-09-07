@@ -27,10 +27,9 @@ class ProcessDataPlatformApiClientTest extends BasePlatformApiClient {
                         .withContentType(MediaType.APPLICATION_JSON)
                         .withPathParameters(new Parameter("id", "[0-9]+"))
                         .withBody(new JsonBody("""
-                                    {
-                                        "action": "import",
-                                        "id": 1
-                                    }""")))
+                                {
+                                    "action": "import"
+                                }""")))
                 .respond(response()
                         .withContentType(MediaType.APPLICATION_JSON)
                         .withBody(new JsonBody(
@@ -41,7 +40,8 @@ class ProcessDataPlatformApiClientTest extends BasePlatformApiClient {
                                           }
                                         """
                         )));
-        var processResponse = platformApiClient().process(123, new ProcessRequest(ProcessAction.IMPORT, 1, null));
+        var processResponse = platformApiClient().process(123, new ProcessRequest(ProcessAction.IMPORT,
+                null, null));
         assertThat(processResponse.success()).isTrue();
     }
 }
