@@ -1,5 +1,8 @@
 package io.github.shinusuresh.productsup.client;
 
+import io.github.shinusuresh.productsup.client.domain.sites.SiteStatus;
+import io.github.shinusuresh.productsup.client.domain.streams.attach.AttachStream;
+import io.github.shinusuresh.productsup.client.domain.streams.attach.AttachStreamResponse;
 import io.github.shinusuresh.productsup.client.domain.streams.list.ImportType;
 import io.github.shinusuresh.productsup.client.domain.streams.list.StreamSource;
 import org.junit.jupiter.api.Test;
@@ -9,6 +12,7 @@ import org.mockserver.model.MediaType;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIterable;
 import static org.assertj.core.api.Assertions.from;
 import static org.mockserver.model.HttpRequest.request;
@@ -70,5 +74,39 @@ class SiteStreamsPlatformApiClientTest extends BasePlatformApiClient {
                 .returns("active", from(StreamSource::status))
                 .returns(List.of("stream : 1"), from(StreamSource::settings));
 
+    }
+
+    @Test
+    void attachStreamToSite() {
+        mockClient()
+                .when(request()
+                        .withMethod("POST")
+                        .withPath("/sites/{id}/streams")
+                        .withPathParameter("id", "[0-9]+")
+                        .withBody(new JsonBody(
+                                """
+                                                {
+                                                      "import_type": 2,
+                                                      "stream_id": 123,
+                                                      "description": "Attach stream api to site",
+                                                      "status": "active"
+                                                }
+                                        """
+                        )))
+                .respond(response()
+                        .withContentType(MediaType.APPLICATION_JSON)
+                        .withBody(new JsonBody(
+                                """
+                                                {
+                                                      "success": true
+                                                }
+                                        """
+                        )));
+        var response = platformApiClient().createStreamDataSource(123, new AttachStream(
+                ImportType.ADDITIONAL_DATA_FEED, "Attach stream api to site", 123, SiteStatus.ACTIVE
+        ));
+        assertThat(response)
+                .extracting(AttachStreamResponse::success)
+                .isEqualTo(true);
     }
 }

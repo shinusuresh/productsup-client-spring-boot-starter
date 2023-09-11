@@ -8,6 +8,8 @@ import io.github.shinusuresh.productsup.client.domain.sites.Sites;
 import io.github.shinusuresh.productsup.client.domain.sites.channels.Channels;
 import io.github.shinusuresh.productsup.client.domain.sites.errors.SiteErrors;
 import io.github.shinusuresh.productsup.client.domain.sites.history.ImportHistory;
+import io.github.shinusuresh.productsup.client.domain.streams.attach.AttachStream;
+import io.github.shinusuresh.productsup.client.domain.streams.attach.AttachStreamResponse;
 import io.github.shinusuresh.productsup.client.domain.streams.list.ListStreamResponse;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -157,4 +159,12 @@ public interface PlatformApiClient {
      */
     @GetExchange("/sites/{id}/streams")
     ListStreamResponse listStreamsBySiteId(@PathVariable(value = "id") Integer id);
+
+    /**
+     * Attach a stream to site.
+     * <a href="https://api-docs.productsup.io/#platform-api-site-stream-data-sources-create-stream-datasource">
+     * Create stream datasource</a>
+     */
+    @PostExchange("/sites/{id}/streams")
+    AttachStreamResponse createStreamDataSource(@PathVariable(value = "id") Integer id, @RequestBody AttachStream attachStreamRequest);
 }
