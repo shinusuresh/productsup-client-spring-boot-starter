@@ -1,90 +1,41 @@
 package io.github.shinusuresh.productsup.client.config;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * Products up related configurations.
  */
 @ConfigurationProperties("productsup")
+@Getter
+@Setter
 public class ProductsUpProperties {
 
+    /**
+     * Token for platform api calls
+     */
     private String token;
 
+    /**
+     * Timeout for API calls.
+     */
+    private long timeout = 5L;
+
+    /**
+     * Authorization token for Stream api calls.
+     */
     private String authorizationToken;
 
+
+    /**
+     *  Platform endpoint.
+     */
     private String platformEndpoint = "https://platform-api.productsup.io/platform/v2";
 
+    /**
+     * Stream api endpoint.
+     */
     private String streamEndpoint = "https://stream-api.productsup.com/";
 
-    /**
-     * Returns platform endpoint.
-     *
-     * @return platform endpoint url
-     */
-    public String getPlatformEndpoint() {
-        return platformEndpoint;
-    }
-
-    /**
-     * Sets platform endpoint.
-     *
-     * @param platformEndpoint - endpoint for platform calls.
-     */
-    public void setPlatformEndpoint(String platformEndpoint) {
-        this.platformEndpoint = platformEndpoint;
-    }
-
-
-    /**
-     * Returns Products up token configured for a client.
-     *
-     * @return token
-     */
-    public String getToken() {
-        return token;
-    }
-
-    /**
-     * Sets token
-     * @param token - token for the client.
-     */
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    /**
-     * Returns stream endpoint.
-     *
-     * @return Stream api endpoint.
-     */
-    public String getStreamEndpoint() {
-        return streamEndpoint;
-    }
-
-    /**
-     * Sets stream endpoint.
-     *
-     * @param streamEndpoint - stream endpoint.
-     */
-    public void setStreamEndpoint(String streamEndpoint) {
-        this.streamEndpoint = streamEndpoint;
-    }
-
-    /**
-     * Returns authorization token for Stream api calls.
-     *
-     * @return authorization token
-     */
-    public String getAuthorizationToken() {
-        return authorizationToken;
-    }
-
-    /**
-     * Sets authorization token for stream api calls.
-     *
-     * @param authorizationToken - Authorization token.
-     */
-    public void setAuthorizationToken(String authorizationToken) {
-        this.authorizationToken = authorizationToken;
-    }
 }

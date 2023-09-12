@@ -21,6 +21,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.support.WebClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+
 /**
  * Autoconfiguration class for ProductsUp client.
  */
@@ -56,6 +59,7 @@ public class ProductsUpAutoConfiguration {
                 .build();
         var factory = HttpServiceProxyFactory
                 .builder(WebClientAdapter.forClient(webClient))
+                .blockTimeout(Duration.of(productsUpProperties.getTimeout(), ChronoUnit.SECONDS))
                 .build();
         return factory.createClient(PlatformApiClient.class);
     }
@@ -84,6 +88,7 @@ public class ProductsUpAutoConfiguration {
                 .build();
         var factory = HttpServiceProxyFactory
                 .builder(WebClientAdapter.forClient(webClient))
+                .blockTimeout(Duration.of(productsUpProperties.getTimeout(), ChronoUnit.SECONDS))
                 .build();
         return factory.createClient(StreamApiClient.class);
     }
@@ -113,6 +118,7 @@ public class ProductsUpAutoConfiguration {
                 .build();
         var factory = HttpServiceProxyFactory
                 .builder(WebClientAdapter.forClient(webClient))
+                .blockTimeout(Duration.of(productsUpProperties.getTimeout(), ChronoUnit.SECONDS))
                 .build();
         return factory.createClient(StreamApiUploadClient.class);
     }
