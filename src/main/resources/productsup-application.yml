@@ -1,4 +1,6 @@
 productsup:
+  #Timeout in seconds
+  timeout: 5
   token: "client_id:client_secret"
   stream:
     enabled: false
