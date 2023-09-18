@@ -1,5 +1,6 @@
 package io.github.shinusuresh.productsup.client;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import io.github.shinusuresh.productsup.client.client.StreamApiUploadClient;
 import io.github.shinusuresh.productsup.client.config.ProductsUpAutoConfiguration;
 import io.github.shinusuresh.productsup.client.data.BaseStreamData;
@@ -9,6 +10,7 @@ import io.github.shinusuresh.productsup.client.domain.streams.upload.UploadAttri
 import io.github.shinusuresh.productsup.client.domain.streams.upload.UploadResponse;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockserver.client.MockServerClient;
 import org.mockserver.junit.jupiter.MockServerSettings;
@@ -20,7 +22,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockserver.model.HttpRequest.request;
@@ -192,6 +196,72 @@ class UploadChunkedDataStreamApiClientTest {
         }
     }
 
+    @Test
+    @DisplayName("Test for Stream api to accept null values in request payload #40")
+    void testUploadWithNullValuesInObject() {
+        this.mockServerClient.reset();
+        this.mockServerClient
+                .when(request()
+                        .withMethod("POST")
+                        .withPath("/streams/{id}/products")
+                        .withPathParameters(new Parameter("id", "[0-9]+"))
+                        .withContentType(MediaType.parse("application/x-ndjson"))
+                        .withHeader("Authorization", "Bearer xyz")
+                        .withBody(new JsonBody("""
+                                    {"id":"ASWHJ4-123-J","title":"My Product","description":null}
+                                    {"id":"ASWHJ4-124-J","title":"My Product","description":"product description"}
+                                ]
+                                """)))
+                .respond(response()
+                        .withStatusCode(202)
+                        .withContentType(MediaType.APPLICATION_JSON)
+                        .withBody(new JsonBody("""
+                                  {
+                                    "data": {
+                                      "type": "batch",
+                                      "id": "4b5dd7c1-afc6-4ad9-96a6-c5d4542d0228",
+                                      "attributes": {
+                                        "status": "uploaded",
+                                        "errorCount": 0,
+                                        "stages": {
+                                          "upload": {
+                                            "completedAt": "2021-12-21T21:12:21+00:00",
+                                            "status": "success",
+                                            "successCount": 2,
+                                            "errorCount": 0,
+                                            "errors": []
+                                          },
+                                          "processing": null
+                                        }
+                                      }
+                                    }
+                                  }
+                                """
+                        )));
+
+        var p1 = new HashMap<String, String>();
+        p1.put("title", "My Product");
+        p1.put("description", null);
+        var p2 = new HashMap<String, String>();
+        p2.put("My Product", "description");
+        p2.put("description", "product description");
+        var uploadResponse = streamApiUploadClient.uploadChunkeddData("83543218",
+                List.of(
+                        new DataWithMap("ASWHJ4-123-J", p1),
+                        new DataWithMap("ASWHJ4-124-J", p2)
+                )
+        );
+        assertThat(uploadResponse.data())
+                .extracting(ResponseData::type, ResponseData::id,
+                        data -> data.attributes().status(),
+                        data -> data.attributes().errorCount(),
+                        data -> data.attributes().stages().upload().status(),
+                        data -> data.attributes().stages().upload().errors().size())
+                .containsExactly("batch", "4b5dd7c1-afc6-4ad9-96a6-c5d4542d0228",
+                        UploadAttributes.Status.UPLOADED,
+                        0, BatchStageStatus.Status.SUCCESS, 0);
+    }
+
 
     @EqualsAndHashCode(callSuper = true)
     @Data
@@ -208,6 +278,21 @@ class UploadChunkedDataStreamApiClientTest {
             super(id);
             this.title = title;
             this.price = price;
+        }
+    }
+
+    @EqualsAndHashCode(callSuper = true)
+    @Data
+    public static class DataWithMap extends BaseStreamData {
+        private Map<String, String> fields;
+
+        public DataWithMap(String id, Map<String, String> fields) {
+            super(id);
+            this.fields = fields;
+        }
+        @JsonAnyGetter
+        public Map<String, String> getFields() {
+            return fields;
         }
     }
 }
