@@ -2,6 +2,7 @@ package io.github.shinusuresh.productsup.client.client;
 
 import io.github.shinusuresh.productsup.client.domain.process.ProcessRequest;
 import io.github.shinusuresh.productsup.client.domain.process.ProcessResponse;
+import io.github.shinusuresh.productsup.client.domain.product.DeleteProductsResponse;
 import io.github.shinusuresh.productsup.client.domain.product.Products;
 import io.github.shinusuresh.productsup.client.domain.project.Projects;
 import io.github.shinusuresh.productsup.client.domain.sites.Sites;
@@ -14,6 +15,7 @@ import io.github.shinusuresh.productsup.client.domain.streams.list.ListStreamRes
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.service.annotation.DeleteExchange;
 import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.PostExchange;
 
@@ -167,4 +169,14 @@ public interface PlatformApiClient {
      */
     @PostExchange("/sites/{id}/streams")
     AttachStreamResponse createStreamDataSource(@PathVariable(value = "id") Integer id, @RequestBody AttachStream attachStreamRequest);
+
+    /**
+     * Delete all products.
+     * <a href="https://api-docs.productsup.io/#platform-api-product-data-write-deleting">Delete all products</a>
+     *
+     * @param id - Site id or tag
+     * @return DeleteProductsResponse
+     */
+    @DeleteExchange("/sites/{id}/products")
+    DeleteProductsResponse deleteAllProducts(@PathVariable(value = "id") String id);
 }
