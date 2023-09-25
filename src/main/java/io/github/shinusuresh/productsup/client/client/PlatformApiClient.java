@@ -9,6 +9,7 @@ import io.github.shinusuresh.productsup.client.domain.sites.Sites;
 import io.github.shinusuresh.productsup.client.domain.sites.channels.Channels;
 import io.github.shinusuresh.productsup.client.domain.sites.errors.SiteErrors;
 import io.github.shinusuresh.productsup.client.domain.sites.history.ImportHistory;
+import io.github.shinusuresh.productsup.client.domain.sites.tags.SiteTagsResponse;
 import io.github.shinusuresh.productsup.client.domain.streams.attach.AttachStream;
 import io.github.shinusuresh.productsup.client.domain.streams.attach.AttachStreamResponse;
 import io.github.shinusuresh.productsup.client.domain.streams.list.ListStreamResponse;
@@ -52,6 +53,15 @@ public interface PlatformApiClient {
      */
     @GetExchange("/sites")
     Sites getSites();
+
+    /**
+     * Get all tags for a given site.
+     *
+     * @param id - Site id.
+     * @return - {@link SiteTagsResponse}.
+     */
+    @GetExchange("/sites/{id}/tags")
+    SiteTagsResponse getAllTags(@PathVariable(value = "id") Integer id);
 
     /**
      * Gets sites by tag.
