@@ -83,8 +83,6 @@ public class ProductsUpAutoConfiguration {
         var webClient = WebClient.builder()
                 .baseUrl(productsUpProperties.getStreamEndpoint())
                 .defaultHeaders(httpHeaders -> httpHeaders.add(HttpHeaders.AUTHORIZATION, productsUpProperties.getAuthorizationToken()))
-                /*.codecs(clientCodecConfigurer -> clientCodecConfigurer.defaultCodecs()
-                        .jackson2JsonDecoder(new Jackson2JsonDecoder(objectMapper, MediaType.APPLICATION_JSON)))*/
                 .build();
         var factory = HttpServiceProxyFactory
                 .builder(WebClientAdapter.forClient(webClient))
