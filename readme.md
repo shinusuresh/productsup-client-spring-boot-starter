@@ -77,3 +77,13 @@ For error scenarios `WebClientResponseException` will be thrown. Handle the exce
 var exception = assertThrows(WebClientResponseException.class, () -> streamApiClient.createStream(data));
 var errors = exception.getResponseBodyAs(StreamErrors.class);
 ```
+
+### Enabling logging
+
+Enable `org.springframework.http` to `DEBUG` will enable logging of request and response.
+
+```yaml
+logging:
+  level:
+    org.springframework.http: DEBUG
+```
