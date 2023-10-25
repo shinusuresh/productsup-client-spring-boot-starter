@@ -21,6 +21,7 @@ import io.github.shinusuresh.productsup.client.domain.streams.update.UpdateStrea
 import io.github.shinusuresh.productsup.client.domain.streams.upload.BatchStageStatus;
 import io.github.shinusuresh.productsup.client.domain.streams.upload.UploadAttributes;
 import java.util.Map;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockserver.client.MockServerClient;
 import org.mockserver.junit.jupiter.MockServerSettings;
@@ -72,13 +73,18 @@ class StreamManagementApiClientTest {
             .returns(StreamType.CHUNKED, from((val) -> val.attributes().type()))
             .returns("some_string_value", from((val) -> val.relationships().account().accountData().id()))
             .returns("account", from((val) -> val.relationships().account().accountData().type()));
+    }
 
+    @Test
+    @DisplayName("Issue #49")
+    void testListStreamsLinks() {
+        assertThat(streamApiClient.listStreams().links()).isNotNull();
     }
 
     @Test
     void testSuccessCreateStreams() {
         var data = new CreateStream(new Stream(null, "stream",
-            new StreamAttributes("Test Stream", StreamType.CHUNKED, null, null), null, null));
+            new StreamAttributes("Test Stream", StreamType.CHUNKED, null, null), null));
         var createStreamResponse = streamApiClient.createStream(data);
         assertThat(createStreamResponse.data().id()).isEqualTo("some_string_value");
     }
@@ -91,7 +97,7 @@ class StreamManagementApiClientTest {
     @Test
     void testUpdateStream() {
         var updateStreamRequest = new UpdateStream(new Stream("123", "stream",
-            new StreamAttributes("Product data stream", null, null, null), null, null));
+            new StreamAttributes("Product data stream", null, null, null), null));
         var updateStreamResponse = streamApiClient.updateStream("83543218", updateStreamRequest);
         assertThat(updateStreamResponse.data())
             .extracting(Stream::id, Stream::type,
@@ -147,7 +153,7 @@ class StreamManagementApiClientTest {
                     """
                 )));
         var data = new CreateStream(new Stream(null, "stream",
-            new StreamAttributes("Test error Stream", StreamType.CHUNKED, null, null), null, null));
+            new StreamAttributes("Test error Stream", StreamType.CHUNKED, null, null), null));
 
         var exception = assertThrows(WebClientResponseException.class, () -> streamApiClient.createStream(data));
         var errors = exception.getResponseBodyAs(StreamErrors.class);
